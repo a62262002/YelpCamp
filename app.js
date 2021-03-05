@@ -26,7 +26,7 @@ const userRoutes = require('./routes/user');
 const campgroundsRoutes = require('./routes/campgrounds');
 const reviewsRoutes = require('./routes/reviews');
 
-const MongoStore = require('connect-mongo').default;
+const MongoStore = require('connect-mongo')(session);
 const dbUrl = 'mongodb://localhost:27017/yelp-camp' || process.env.DB_URL;
 
 // 'mongodb://localhost:27017/yelp-camp'
@@ -55,8 +55,8 @@ app.use(mongoSanitize({ replaceWith: '_' }));
 
 const secret = process.env.SECRET || 'thisshouldbeabettersecret';
 
-const store = MongoStore.create({
-	mongoUrl: dbUrl,
+const store = new MongoStore({
+	url: dbUrl,
 	secret,
 	touchAfter: 24 * 60 * 60
 });
